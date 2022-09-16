@@ -1,13 +1,3 @@
-const app = require('./app');
-
-const port = process.env.PORT || 3001;
-app.listen(port, () => {
-  /* eslint-disable no-console */
-  console.log(`Listening: http://localhost:${port}`);
-  /* eslint-enable no-console */
-});
-
-
 const request = require("request");
 const cheerio = require("cheerio");
 // function extractEmails ( text ){
@@ -25,9 +15,9 @@ function getEmails(body) {
   return array_mails;
   
 }
-const pttCrawler = () => {
+const pttCrawler = (url) => {
     request({
-        url: "https://www.chaorui.com.tw/",
+        url: url,
         method: "GET"
     }, (error, res, body) => {
         // 如果有錯誤訊息，或沒有 body(內容)，就 return
@@ -37,7 +27,11 @@ const pttCrawler = () => {
 
         const data = [];
         const $ = cheerio.load(body); // 載入 body
-        console.log( getEmails(body))
+        
+        console.log(`輸入的網址是: ${url}`);
+        console.log('找到的公司名稱是: '+$("title").text())
+        console.log('找到的email: ' +getEmails(body))
+        console.log('-------')
         // const list = $(".r-list-container .r-ent");
         // for (let i = 0; i < list.length; i++) {
         //     const title = list.eq(i).find('.title a').text();
@@ -49,7 +43,27 @@ const pttCrawler = () => {
         // }
 
         // console.log(data);
+        setTimeout(()=>{
+          start()
+        },300)
+
     });
 };
 
-pttCrawler();
+const readline = require('readline').createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+
+
+const start = ()=>{
+  readline.question(`在這貼上一個網址: `, name => {
+    pttCrawler(name)
+    
+  });
+}
+const finish = ()=>{
+  readline.close();
+}
+start()
