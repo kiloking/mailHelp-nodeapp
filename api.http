@@ -1,0 +1,11 @@
+####
+GET http://127.0.0.1:3001/api/
+Content-Type: application/json
+
+###
+POST http://127.0.0.1:3001/api
+Content-Type: application/json
+
+{
+  "url": "https://www.mingjilee.com/tw/about.html"
+}
